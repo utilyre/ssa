@@ -20,7 +20,7 @@ func main() {
 			view.New,
 		),
 		fx.Invoke(
-			handler.HandleHC,
+			handler.HandleStatic,
 		),
 	).Run()
 }
