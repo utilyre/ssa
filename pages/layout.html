@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SSA</title>
 
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/htmx.org@1.9.5"></script>
+    <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+
     <style>
       html {
         color-scheme: light dark;
       }
     </style>
   </head>
-  <body>
+  <body class="flex flex-col items-center bg-slate-950">
     {{page .Name .Payload}}
   </body>
 </html>

@@ -1,10 +1,28 @@
 {{define "signup"}}
-<h1>Sign Up</h1>
+<h1 class="mt-8 mb-16 font-extrabold text-5xl">Sign Up</h1>
 
-<form method="post" action="/users/signup">
-  <input required name="email" type="email" placeholder="Email" />
-  <input required name="password" type="password" placeholder="Password" />
+<form hx-post="/users/signup" hx-ext="json-enc" class="flex flex-col gap-4">
+  <input
+    required
+    name="email"
+    type="email"
+    placeholder="Email"
+    class="p-2 rounded bg-slate-800 hover:bg-slate-700 focus:bg-slate-700 transition-colors"
+  />
 
-  <button type="submit">Sign Up</button>
+  <input
+    required
+    name="password"
+    type="password"
+    placeholder="Password"
+    class="p-2 rounded bg-slate-800 hover:bg-slate-700 focus:bg-slate-700 transition-colors"
+  />
+
+  <button
+    type="submit"
+    class="mt-2 p-1 rounded bg-slate-800 hover:bg-slate-700 active:bg-slate-900 transition-colors"
+  >
+    Sign Up
+  </button>
 </form>
 {{end}}

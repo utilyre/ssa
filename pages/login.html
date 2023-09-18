@@ -1,10 +1,28 @@
 {{define "login"}}
-<h1>Login</h1>
+<h1 class="mt-8 mb-16 font-extrabold text-5xl">Login</h1>
 
-<form method="post" action="/users/login">
-  <input required name="email" type="email" placeholder="Email" />
-  <input required name="password" type="password" placeholder="Password" />
+<form hx-post="/users/login" hx-ext="json-enc" class="flex flex-col gap-4">
+  <input
+    required
+    name="email"
+    type="email"
+    placeholder="Email"
+    class="p-2 rounded bg-slate-800 hover:bg-slate-700 focus:bg-slate-700 transition-colors"
+  />
 
-  <button type="submit">Login</button>
+  <input
+    required
+    name="password"
+    type="password"
+    placeholder="Password"
+    class="p-2 rounded bg-slate-800 hover:bg-slate-700 focus:bg-slate-700 transition-colors"
+  />
+
+  <button
+    type="submit"
+    class="mt-2 p-1 rounded bg-slate-800 hover:bg-slate-700 active:bg-slate-900 transition-colors"
+  >
+    Login
+  </button>
 </form>
 {{end}}

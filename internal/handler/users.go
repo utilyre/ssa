@@ -72,5 +72,7 @@ func (h usersHandler) signup(w http.ResponseWriter, r *http.Request) error {
 	}
 
 	user.ID = dbUser.ID
+
+	w.Header().Set("HX-Redirect", "/login")
 	return xmate.WriteJSON(w, http.StatusCreated, user)
 }
