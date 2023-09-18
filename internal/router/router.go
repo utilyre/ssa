@@ -19,6 +19,13 @@ type Router struct {
 
 type MiddlewareFunc func(next http.Handler) xmate.Handler
 
+func (r Router) Subrouter(prefix string) Router {
+	return Router{
+		router:       r.router.PathPrefix(prefix).Subrouter(),
+		errorHandler: r.errorHandler,
+	}
+}
+
 func (r Router) Use(mwf MiddlewareFunc) {
 	r.router.Use(func(next http.Handler) http.Handler {
 		return r.errorHandler.Handle(mwf(next))

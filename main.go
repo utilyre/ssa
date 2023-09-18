@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/go-playground/validator/v10"
 	"github.com/utilyre/ssa/internal/database"
 	"github.com/utilyre/ssa/internal/handler"
 	"github.com/utilyre/ssa/internal/logger"
@@ -16,10 +17,12 @@ func main() {
 			logger.New,
 			database.New,
 			store.New,
+			validator.New,
 			router.New,
 			templates.New,
 		),
 		fx.Invoke(
+			handler.HandleUsers,
 			handler.HandleStatic,
 		),
 	).Run()
