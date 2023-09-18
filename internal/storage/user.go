@@ -48,3 +48,13 @@ func (s UserStorage) Create(ctx context.Context, user *User) error {
 
 	return nil
 }
+
+func (s UserStorage) ReadByEmail(ctx context.Context, user *User) error {
+	query := `
+	SELECT "id", "created_at", "password"
+	FROM "users"
+	WHERE "email" = $1;
+	`
+
+	return s.db.GetContext(ctx, user, query, user.Email)
+}
