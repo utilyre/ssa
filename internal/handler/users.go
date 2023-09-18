@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/go-playground/validator/v10"
+	"github.com/gorilla/sessions"
 	"github.com/utilyre/ssa/internal/router"
 	"github.com/utilyre/ssa/internal/storage"
 	"github.com/utilyre/xmate"
@@ -23,17 +24,20 @@ type User struct {
 
 type usersHandler struct {
 	storage  storage.UserStorage
+	store    sessions.Store
 	validate *validator.Validate
 }
 
 func HandleUsers(
 	r router.Router,
 	s storage.UserStorage,
+	store sessions.Store,
 	v *validator.Validate,
 ) {
 	sr := r.Subrouter("/users")
 	h := usersHandler{
 		storage:  s,
+		store:    store,
 		validate: v,
 	}
 
@@ -110,5 +114,13 @@ func (h usersHandler) login(w http.ResponseWriter, r *http.Request) error {
 		return xmate.NewHTTPError(http.StatusNotFound)
 	}
 
-	panic("TODO: do the session stuff")
+	session, err := h.store.Get(r, "ssa-login")
+	if err != nil {
+		return err
+	}
+
+	session.Values["email"] = user.Email
+
+	w.Header().Set("HX-Redirect", "/")
+	return session.Save(r, w)
 }
