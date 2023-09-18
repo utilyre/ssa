@@ -13,14 +13,30 @@ import (
 )
 
 type Router struct {
-	*mux.Router
-	ErrorHandler xmate.ErrorHandler
+	router       *mux.Router
+	errorHandler xmate.ErrorHandler
+}
+
+type MiddlewareFunc func(next http.Handler) xmate.Handler
+
+func (r Router) Use(mwf MiddlewareFunc) {
+	r.router.Use(func(next http.Handler) http.Handler {
+		return r.errorHandler.Handle(mwf(next))
+	})
+}
+
+func (r Router) Handle(path string, handler xmate.Handler) *mux.Route {
+	return r.router.Handle(path, r.errorHandler.Handle(handler))
+}
+
+func (r Router) HandleFunc(path string, handler xmate.HandlerFunc) *mux.Route {
+	return r.router.HandleFunc(path, r.errorHandler.HandleFunc(handler))
 }
 
 func New(lc fx.Lifecycle, l *slog.Logger) Router {
 	r := Router{
-		Router: mux.NewRouter(),
-		ErrorHandler: func(w http.ResponseWriter, r *http.Request) {
+		router: mux.NewRouter(),
+		errorHandler: func(w http.ResponseWriter, r *http.Request) {
 			err := r.Context().Value("error").(error)
 
 			httpErr := new(xmate.HTTPError)
@@ -36,7 +52,7 @@ func New(lc fx.Lifecycle, l *slog.Logger) Router {
 	}
 	srv := http.Server{
 		Addr:    ":" + os.Getenv("SERVER_PORT"),
-		Handler: r,
+		Handler: r.router,
 	}
 
 	lc.Append(fx.Hook{

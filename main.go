@@ -6,7 +6,7 @@ import (
 	"github.com/utilyre/ssa/internal/logger"
 	"github.com/utilyre/ssa/internal/router"
 	"github.com/utilyre/ssa/internal/store"
-	"github.com/utilyre/ssa/internal/view"
+	"github.com/utilyre/ssa/internal/templates"
 	"go.uber.org/fx"
 )
 
@@ -17,7 +17,7 @@ func main() {
 			database.New,
 			store.New,
 			router.New,
-			view.New,
+			templates.New,
 		),
 		fx.Invoke(
 			handler.HandleStatic,
