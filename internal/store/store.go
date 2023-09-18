@@ -1,12 +1,13 @@
 package store
 
 import (
+	"os"
+
 	"github.com/gorilla/sessions"
-	"github.com/utilyre/ssa/internal/env"
 )
 
-func New(e env.Env) sessions.Store {
-	store := sessions.NewCookieStore(e.AuthKey)
+func New() sessions.Store {
+	store := sessions.NewCookieStore([]byte(os.Getenv("AUTH_KEY")))
 	store.Options.HttpOnly = true
 
 	return store

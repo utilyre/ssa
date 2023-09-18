@@ -5,9 +5,9 @@ import (
 	"errors"
 	"log/slog"
 	"net/http"
+	"os"
 
 	"github.com/gorilla/mux"
-	"github.com/utilyre/ssa/internal/env"
 	"github.com/utilyre/xmate"
 	"go.uber.org/fx"
 )
@@ -17,7 +17,7 @@ type Router struct {
 	ErrorHandler xmate.ErrorHandler
 }
 
-func New(lc fx.Lifecycle, e env.Env, l *slog.Logger) Router {
+func New(lc fx.Lifecycle, l *slog.Logger) Router {
 	r := Router{
 		Router: mux.NewRouter(),
 		ErrorHandler: func(w http.ResponseWriter, r *http.Request) {
@@ -35,7 +35,7 @@ func New(lc fx.Lifecycle, e env.Env, l *slog.Logger) Router {
 		},
 	}
 	srv := http.Server{
-		Addr:    ":" + e.BEPort,
+		Addr:    ":" + os.Getenv("SERVER_PORT"),
 		Handler: r,
 	}
 

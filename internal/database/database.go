@@ -8,14 +8,13 @@ import (
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"github.com/utilyre/ssa/internal/env"
 	"go.uber.org/fx"
 )
 
-func New(lc fx.Lifecycle, e env.Env, l *slog.Logger) *sqlx.DB {
+func New(lc fx.Lifecycle, l *slog.Logger) *sqlx.DB {
 	dsn := fmt.Sprintf(
 		"postgresql://%s:%s@%s:%s?sslmode=disable",
-		e.DBUser, e.DBPass, e.DBHost, e.DBPort,
+		os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_HOST"), os.Getenv("DB_PORT"),
 	)
 
 	db, err := sqlx.Open("postgres", dsn)
