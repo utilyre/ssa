@@ -16,6 +16,14 @@
     </style>
   </head>
   <body class="flex flex-col items-center bg-slate-950">
-    {{page .Name .Payload}}
+    <nav class="w-full flex justify-center bg-slate-800">
+      <ul class="w-1/5 p-4 flex justify-between">
+        <li><a href="/" class="p-4 hover:bg-slate-700 transition-colors">Home</a></li>
+        <li><a href="/signup" class="p-4 hover:bg-slate-700 transition-colors">Sign Up</a></li>
+        <li><a href="/login" class="p-4 hover:bg-slate-700 transition-colors">Login</a></li>
+      </ul>
+    </nav>
+
+    <main>{{page .Name .Payload}}</main>
   </body>
 </html>
