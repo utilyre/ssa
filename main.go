@@ -18,6 +18,7 @@ func main() {
 			logger.New,
 			database.New,
 			storage.NewUserStorage,
+			storage.NewSessionStorage,
 			store.New,
 			validator.New,
 			router.New,

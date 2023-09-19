@@ -12,12 +12,13 @@ import (
 	"github.com/gorilla/sessions"
 	"github.com/utilyre/ssa/internal/router"
 	"github.com/utilyre/ssa/internal/storage"
+	"github.com/utilyre/ssa/internal/store"
 	"github.com/utilyre/xmate"
 	"golang.org/x/crypto/bcrypt"
 )
 
 type User struct {
-	ID       int64  `json:"id,omitempty" validate:"isdefault"`
+	ID       int32  `json:"id,omitempty" validate:"isdefault"`
 	Email    string `json:"email" validate:"required,email,max=255"`
 	Password string `json:"password,omitempty" validate:"required,min=8,max=1024"`
 }
@@ -119,7 +120,7 @@ func (h usersHandler) login(w http.ResponseWriter, r *http.Request) error {
 		return err
 	}
 
-	session.Values["email"] = user.Email
+	session.Values[store.UserIDKey{}] = dbUser.ID
 
 	w.Header().Set("HX-Redirect", "/")
 	return session.Save(r, w)

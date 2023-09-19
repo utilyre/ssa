@@ -12,7 +12,7 @@ import (
 var ErrDuplicateKey = errors.New("duplicate key value violates unique constraint")
 
 type User struct {
-	ID        int64     `db:"id"`
+	ID        int32     `db:"id"`
 	CreatedAt time.Time `db:"created_at"`
 
 	Email    string `db:"email"`
